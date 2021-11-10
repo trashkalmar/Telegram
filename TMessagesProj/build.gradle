@@ -46,7 +46,7 @@ android {
     buildToolsVersion '31.0.0'
     ndkVersion "21.4.7075529"
 
-    defaultConfig.applicationId = "org.telegram.messenger"
+    defaultConfig.applicationId = "org.telegram.messenger.derived"
 
     sourceSets.main.jniLibs.srcDirs = ['./jni/']
 
@@ -75,14 +75,14 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("config/release.keystore")
+            storeFile file("config/derived.keystore")
             storePassword RELEASE_STORE_PASSWORD
             keyAlias RELEASE_KEY_ALIAS
             keyPassword RELEASE_KEY_PASSWORD
         }
 
         release {
-            storeFile file("config/release.keystore")
+            storeFile file("config/derived.keystore")
             storePassword RELEASE_STORE_PASSWORD
             keyAlias RELEASE_KEY_ALIAS
             keyPassword RELEASE_KEY_PASSWORD
@@ -318,9 +318,9 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 30
-        versionName "8.2.1"
+        versionName "8.2.3"
 
-        vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
+        vectorDrawables.generatedDensities = ['xxhdpi']
 
         externalNativeBuild {
             cmake {
@@ -328,6 +328,8 @@ android {
                 arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-16', "-j=16"
             }
         }
+
+        resConfigs "en"
     }
 
     packagingOptions {
@@ -340,5 +342,8 @@ android {
         exclude "META-INF/**.version"
     }
 }
+
+task dev(dependsOn: "assembleArm64_SDK23Release")
+task installDev(dependsOn: "installArm64_SDK23Release")
 
 apply plugin: 'com.google.gms.google-services'
